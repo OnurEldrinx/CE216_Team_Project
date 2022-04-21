@@ -21,9 +21,12 @@ import java.net.URL;
 import java.util.*;
 
 public class Controller implements Initializable {
+
     ObservableList<Type> typeList2 = FXCollections.observableArrayList();
     ArrayList<Type> typeList = new ArrayList<>();
-
+    ArrayList<Item> itemList = new ArrayList<>();
+    ArrayList<TreeItem<String>> typeNodes = new ArrayList<>();
+    ArrayList<TreeItem<String>> itemNodes = new ArrayList<>();
 
 
     public TextField attributeNameInput;
@@ -113,6 +116,7 @@ public class Controller implements Initializable {
         Catalog.getCatalogInstance().types.add(t);
         lastCreatedType = t;
         TreeItem<String> treeItem = new TreeItem<>(t.getName());
+        typeNodes.add(treeItem);
         tree.getRoot().getChildren().add(treeItem);
         System.out.println(tree.getRoot().getChildren().size());
 
@@ -129,7 +133,20 @@ public class Controller implements Initializable {
         Catalog.getCatalogInstance().items.add(item);
         lastCreatedItem = item;
         TreeItem<String> treeItem = new TreeItem<>(item.getName());
-        tree.getRoot().getChildren().add(treeItem);
+        itemNodes.add(treeItem);
+
+        for (int i=0;i<typeNodes.size();i++){
+
+            if(Objects.equals(typeNodes.get(i).getValue(), item.getType().getName())){
+
+                typeNodes.get(i).getChildren().add(treeItem);
+                break;
+
+            }
+
+        }
+
+        //tree.getRoot().getChildren().add(treeItem);
         System.out.println(tree.getRoot().getChildren().size());
         //createWindow.setVisible(false);
         itemCreateWindow.setVisible(false);

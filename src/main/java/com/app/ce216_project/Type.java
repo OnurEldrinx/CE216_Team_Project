@@ -14,7 +14,6 @@ public class Type {
         items = new ArrayList<>();
         defaultAttributes = new ArrayList<>();
 
-
     }
 
     public void edit(){ }
@@ -28,8 +27,6 @@ public class Type {
         defaultAttributes.add(attribute);
 
     }
-
-
 
 
     // Getters & Setters
@@ -55,5 +52,10 @@ public class Type {
 
     public void setDefaultAttributes(ArrayList<Attribute> defaultAttributes) {
         this.defaultAttributes = defaultAttributes;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -33,7 +33,9 @@ public class Catalog {
     }
 
     
-    public void createItem(Item item){ }
+    public Item createItem(Item item){
+        return item;
+    }
     public void editType(Type type){ }
     public void editItem(Item item){ }
     public void deleteItem(Item item){ }

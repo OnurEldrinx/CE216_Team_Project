@@ -13,7 +13,6 @@ public class Item {
         this.type = type;
 
         tags = new ArrayList<>();
-
     }
 
     public void edit(){ }

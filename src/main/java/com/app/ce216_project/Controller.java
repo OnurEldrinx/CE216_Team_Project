@@ -165,7 +165,6 @@ public class Controller implements Initializable {
         System.out.println(tree.getRoot().getChildren().size());
         //createWindow.setVisible(false);
         itemCreateWindow.setVisible(false);
-
     }
 
     public void createTypeCancelButtonAction(ActionEvent event) {

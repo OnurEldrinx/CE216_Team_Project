@@ -27,8 +27,6 @@ public class Catalog {
 
 
     public Type createType(Type type){
-
-        types.add(type);
         return type;
     }
 

@@ -42,6 +42,37 @@ public class Type {
         return items;
     }
 
+    public String showInformation(){
+
+        StringBuilder i = new StringBuilder();
+
+        StringBuilder a = new StringBuilder();
+
+        for (Item item:items){
+
+            assert false;
+            i.append("* ").append(item.getName()).append("\n");
+
+        }
+
+        for (Attribute attribute:defaultAttributes){
+
+            assert false;
+            a.append("* ").append(attribute.getName()).append("\n");
+
+        }
+
+        String s = "\nType Name: " + name +"\n"+
+                   "\nCreated Items:\n" + i +
+                   "\nDefault Attributes:\n" + a;
+
+
+
+
+        return s;
+
+    }
+
     public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
@@ -56,6 +87,7 @@ public class Type {
 
     @Override
     public String toString() {
-        return name;
+        return name ;
     }
+
 }

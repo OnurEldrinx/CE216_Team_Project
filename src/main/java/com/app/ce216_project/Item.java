@@ -23,6 +23,36 @@ public class Item {
 
     public void addTag(){ }
 
+    public String showInformation(){
+
+        StringBuilder i = new StringBuilder();
+
+        StringBuilder a = new StringBuilder();
+
+        for (Tag tag:tags){
+
+            assert false;
+            i.append("* ").append(tag.getName()).append("\n");
+
+        }
+
+        for (Attribute attribute:type.getDefaultAttributes()){
+
+            assert false;
+            a.append("* ").append(attribute.getName()).append(": ").append(attribute.getValue()).append("\n");
+
+        }
+
+        String s = "\nItem Name: " + name +"\n"+
+                "\nTags:\n" + i +
+                "\nAttributes:\n" + a;
+
+
+
+
+        return s;
+
+    }
 
     // Getters & Setters
 
@@ -49,5 +79,10 @@ public class Item {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

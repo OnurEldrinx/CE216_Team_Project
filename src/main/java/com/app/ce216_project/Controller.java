@@ -1,7 +1,6 @@
 package com.app.ce216_project;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,8 +19,8 @@ public class Controller implements Initializable {
 
     ArrayList<Type> typeList = new ArrayList<>();
     ArrayList<Item> itemList = new ArrayList<>();
-    ArrayList<TreeItem<Object>> typeNodes = new ArrayList<TreeItem<Object>>();
-    ArrayList<TreeItem<Object>> itemNodes = new ArrayList<TreeItem<Object>>();
+    ArrayList<TreeItem<Object>> typeNodes = new ArrayList<>();
+    ArrayList<TreeItem<Object>> itemNodes = new ArrayList<>();
 
 
     public TextField attributeNameInput;
@@ -40,7 +39,6 @@ public class Controller implements Initializable {
     public Button finishAttributeWindowButton;
 
     private Type lastCreatedType;
-    private Item lastCreatedItem;
 
     @FXML
     private TreeView<Object> tree;
@@ -67,6 +65,9 @@ public class Controller implements Initializable {
     @FXML
     private Pane addAttributeWindow;
 
+    @FXML
+    private Pane deletePane;
+
     private Stage currentStage;
     private Parent currentRoot;
     private Scene currentScene;
@@ -80,6 +81,12 @@ public class Controller implements Initializable {
 
     @FXML
     private ChoiceBox editItemChoiceBox;
+
+    @FXML
+    private ChoiceBox deleteTypeChoiceBox;
+
+    @FXML
+    private ChoiceBox deleteItemChoiceBox;
 
     @FXML
     private TextArea textArea;
@@ -104,6 +111,9 @@ public class Controller implements Initializable {
         typeChoice1.setValue("Types");
         typeChoice1.getItems().addAll(typeList);
 
+        deleteTypeChoiceBox.setValue("Types");
+        deleteItemChoiceBox.setValue("Items");
+
     }
 
     public void choiceBoxRefresh(){
@@ -112,6 +122,25 @@ public class Controller implements Initializable {
 
     public void choice1BoxRefresh(){
         typeChoice1.getItems().addAll(typeList);
+    }
+
+    public void deleteTypeChoiceBoxRefresh(){
+        deleteTypeChoiceBox.getItems().addAll(typeList);
+    }
+
+    public void deleteItemChoiceBoxRefresh(){
+        deleteItemChoiceBox.getItems().addAll(itemList);
+    }
+
+
+    public void openDeletePane(){
+        deleteTypeChoiceBoxRefresh();
+        deleteItemChoiceBoxRefresh();
+        deletePane.setVisible(true);
+    }
+
+    public void closeDeletePane(){
+        deletePane.setVisible(false);
     }
 
     public void openEditPane(ActionEvent event) throws  IOException{
@@ -180,10 +209,10 @@ public class Controller implements Initializable {
         Item item = Catalog.getCatalogInstance().createItem(new Item(itemNameInput.getText(), (Type) typeChoice.getValue()));
         Catalog.getCatalogInstance().items.add(item);
         item.getType().getItems().add(item);
-        lastCreatedItem = item;
         TreeItem<Object> treeItem = new TreeItem<>(item);
         itemNodes.add(treeItem);
         mainAdd.setVisible(false);
+        itemList.add(item);
 
         for (int i=0;i<typeNodes.size();i++){
             if(Objects.equals(typeNodes.get(i).getValue(), item.getType())){
@@ -280,5 +309,24 @@ public class Controller implements Initializable {
             }
         }
     }
+
+    public void deleteType(ActionEvent event){
+        for (int i = 0; i < typeList.size(); i++) {
+            if (typeList.get(i).getName().equals(deleteTypeChoiceBox.getValue().toString())){
+                typeList.remove(i);
+            }
+        }
+    }
+
+    public void deleteItem(ActionEvent event){
+        for (int i = 0; i < itemList.size(); i++) {
+            if (itemList.get(i).getName().equals(deleteItemChoiceBox.getValue().toString())) {
+                itemList.remove(i);
+            }
+        }
+        tree.refresh();
+    }
+
+
 
 }

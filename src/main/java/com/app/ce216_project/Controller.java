@@ -8,11 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,8 +18,6 @@ import java.util.*;
 
 public class Controller implements Initializable {
 
-
-    ObservableList<Type> typeList2 = FXCollections.observableArrayList();
     ArrayList<Type> typeList = new ArrayList<>();
     ArrayList<Item> itemList = new ArrayList<>();
     ArrayList<TreeItem<Object>> typeNodes = new ArrayList<TreeItem<Object>>();
@@ -32,6 +28,13 @@ public class Controller implements Initializable {
     public TextField attributeValueInput;
 
     public TextArea attributeDescriptionInput;
+
+    public TextArea editTypeNameInput;
+    public TextArea editItemNameInput;
+
+    public TextArea editTypeAttributeNameInput;
+    public TextArea editTypeAttributeValueInput;
+    public TextArea editItemAttributeInput;
 
     public Button addAttributeButton;
     public Button finishAttributeWindowButton;
@@ -69,27 +72,56 @@ public class Controller implements Initializable {
     private Scene currentScene;
 
     @FXML
-    private ChoiceBox<Object> typeChoice;
+    private ChoiceBox typeChoice;
+    @FXML
+    private ChoiceBox typeChoice1;
+    @FXML
+    private ChoiceBox typeChoice2;
+
+    @FXML
+    private ChoiceBox editItemChoiceBox;
 
     @FXML
     private TextArea textArea;
+
+    int counter =0;
+
+    @FXML
+    private Pane editPane;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         TreeItem<Object> treeRoot = new TreeItem<>("Types");
         System.out.println(Catalog.getCatalogInstance().getTypes().size());
         tree.setRoot(treeRoot);
+
+
         typeChoice.setValue("Types");
         typeChoice.getItems().addAll(typeList);
 
+        typeChoice1.setValue("Types");
+        typeChoice1.getItems().addAll(typeList);
+
     }
 
-
-    public void choiceBoxRefresh(Type newType){
-        typeChoice.getItems().add(newType);
+    public void choiceBoxRefresh(){
+        typeChoice.getItems().addAll(typeList);
     }
 
+    public void choice1BoxRefresh(){
+        typeChoice1.getItems().addAll(typeList);
+    }
 
+    public void openEditPane(ActionEvent event) throws  IOException{
+        choice1BoxRefresh();
+        editPane.setVisible(true);
+    }
+
+    public void closeEditPane(ActionEvent event) throws  IOException{
+        editPane.setVisible(false);
+    }
 
     public void closeAddButton(ActionEvent event) throws  IOException{
         mainAdd.setVisible(false);
@@ -135,12 +167,10 @@ public class Controller implements Initializable {
         tree.getRoot().getChildren().add(treeItem);
         System.out.println(tree.getRoot().getChildren().size());
 
-
-
         //createWindow.setVisible(false);
         addAttributeWindow.setVisible(true);
         typeList.add(t);
-        choiceBoxRefresh(t);
+        choiceBoxRefresh();
         createWindow.setVisible(false);
 
     }
@@ -198,7 +228,7 @@ public class Controller implements Initializable {
 
             System.out.println("Item is null : " +  (item == null));
 
-
+            counter++;
 
 
             if(item != tree.getRoot()){
@@ -235,5 +265,20 @@ public class Controller implements Initializable {
 
     }
 
+    public void editTypeName(ActionEvent event) {
+        for (int i = 0; i < typeList.size(); i++) {
+            if (typeList.get(i).getName().equals(typeChoice1.getValue().toString())){
+                typeList.get(i).setName(editTypeNameInput.getText());
+            }
+        }
+    }
+
+    public void setEditTypeAttribute(ActionEvent event){
+        for (int i = 0; i < typeList.size(); i++) {
+            if (typeList.get(i).getName().equals(typeChoice1.getValue().toString())){
+                typeList.get(i).addAttribute(editTypeAttributeNameInput.getText(),editTypeAttributeValueInput.getText(),"");
+            }
+        }
+    }
 
 }

@@ -75,7 +75,7 @@ public class Controller implements Initializable {
     @FXML
     private ChoiceBox typeChoice;
     @FXML
-    private ChoiceBox typeChoice1;
+    private ComboBox typeChoice1C;
     @FXML
     private ChoiceBox typeChoice2;
 
@@ -91,11 +91,10 @@ public class Controller implements Initializable {
     @FXML
     private TextArea textArea;
 
-    int counter =0;
+    int counter = 0;
 
     @FXML
     private Pane editPane;
-
 
 
     @Override
@@ -105,58 +104,73 @@ public class Controller implements Initializable {
         tree.setRoot(treeRoot);
 
 
-        typeChoice.setValue("Types");
-        typeChoice.getItems().addAll(typeList);
 
-        typeChoice1.setValue("Types");
-        typeChoice1.getItems().addAll(typeList);
+        typeChoice1C.setValue("Types");
+        typeChoice1C.getItems().addAll(typeList);
+
 
         deleteTypeChoiceBox.setValue("Types");
         deleteItemChoiceBox.setValue("Items");
 
     }
 
-    public void choiceBoxRefresh(){
-        typeChoice.getItems().addAll(typeList);
+    public void choiceBoxRefresh() {
+        for (Type type : typeList) {
+            typeChoice.getItems().addAll(type);
+        }
     }
 
-    public void choice1BoxRefresh(){
-        typeChoice1.getItems().addAll(typeList);
-    }
-
-    public void deleteTypeChoiceBoxRefresh(){
-        deleteTypeChoiceBox.getItems().addAll(typeList);
-    }
-
-    public void deleteItemChoiceBoxRefresh(){
-        deleteItemChoiceBox.getItems().addAll(itemList);
+    public void choice1BoxRefresh() {
+        for (Type type : typeList) {
+            typeChoice1C.getItems().addAll(type);
+        }
     }
 
 
-    public void openDeletePane(){
+    public void ComboBoxRefresh() {
+        for (Type type : typeList) {
+            typeChoice1C.getItems().addAll(type);
+        }
+    }
+
+
+    public void deleteTypeChoiceBoxRefresh() {
+        for (Type type : typeList) {
+            deleteTypeChoiceBox.getItems().add(type);
+        }
+    }
+
+    public void deleteItemChoiceBoxRefresh() {
+        for (Item type : itemList) {
+            deleteItemChoiceBox.getItems().add(type);
+        }
+    }
+
+
+    public void openDeletePane() {
         deleteTypeChoiceBoxRefresh();
         deleteItemChoiceBoxRefresh();
         deletePane.setVisible(true);
     }
 
-    public void closeDeletePane(){
+    public void closeDeletePane() {
         deletePane.setVisible(false);
     }
 
-    public void openEditPane(ActionEvent event) throws  IOException{
+    public void openEditPane(ActionEvent event) throws IOException {
         choice1BoxRefresh();
         editPane.setVisible(true);
     }
 
-    public void closeEditPane(ActionEvent event) throws  IOException{
+    public void closeEditPane(ActionEvent event) throws IOException {
         editPane.setVisible(false);
     }
 
-    public void closeAddButton(ActionEvent event) throws  IOException{
+    public void closeAddButton(ActionEvent event) throws IOException {
         mainAdd.setVisible(false);
     }
 
-    public void addButtonAction(ActionEvent event) throws IOException{
+    public void addButtonAction(ActionEvent event) throws IOException {
         mainAdd.setVisible(true);
     }
 
@@ -181,12 +195,12 @@ public class Controller implements Initializable {
     }
 
 
-    public void newItemButtonAction(ActionEvent event) throws IOException{
+    public void newItemButtonAction(ActionEvent event) throws IOException {
         itemCreateWindow.setVisible(true);
         mainAdd.setVisible(false);
     }
 
-    public void createTypeButtonAction(ActionEvent event){
+    public void createTypeButtonAction(ActionEvent event) {
 
         Type t = Catalog.getCatalogInstance().createType(new Type(typeNameInput.getText()));
         Catalog.getCatalogInstance().types.add(t);
@@ -200,12 +214,13 @@ public class Controller implements Initializable {
         addAttributeWindow.setVisible(true);
         typeList.add(t);
         choiceBoxRefresh();
+        ComboBoxRefresh();
         createWindow.setVisible(false);
 
     }
 
     @FXML
-    public void createItemButtonAction(ActionEvent event) throws IOException{
+    public void createItemButtonAction(ActionEvent event) throws IOException {
         Item item = Catalog.getCatalogInstance().createItem(new Item(itemNameInput.getText(), (Type) typeChoice.getValue()));
         Catalog.getCatalogInstance().items.add(item);
         item.getType().getItems().add(item);
@@ -214,8 +229,8 @@ public class Controller implements Initializable {
         mainAdd.setVisible(false);
         itemList.add(item);
 
-        for (int i=0;i<typeNodes.size();i++){
-            if(Objects.equals(typeNodes.get(i).getValue(), item.getType())){
+        for (int i = 0; i < typeNodes.size(); i++) {
+            if (Objects.equals(typeNodes.get(i).getValue(), item.getType())) {
                 typeNodes.get(i).getChildren().add(treeItem);
                 break;
             }
@@ -236,59 +251,58 @@ public class Controller implements Initializable {
         itemCreateWindow.setVisible(false);
     }
 
-    public void addAttributeButtonAction(ActionEvent event){
-        lastCreatedType.addAttribute(attributeNameInput.getText(),null,null);
+    public void addAttributeButtonAction(ActionEvent event) {
+        lastCreatedType.addAttribute(attributeNameInput.getText(), null, null);
         attributeNameInput.setText("");
     }
 
-    public void finishAddingAttributeButtonAction(ActionEvent event){
+    public void finishAddingAttributeButtonAction(ActionEvent event) {
         addAttributeWindow.setVisible(false);
         createWindow.setVisible(false);
-        System.out.print(lastCreatedType.getName()  + " Attributes : \n");
+        System.out.print(lastCreatedType.getName() + " Attributes : \n");
 
-        for (int i=0;i<lastCreatedType.getDefaultAttributes().size();i++){
+        for (int i = 0; i < lastCreatedType.getDefaultAttributes().size(); i++) {
             System.out.println("* " + lastCreatedType.getDefaultAttributes().get(i).getName());
         }
     }
 
-    public void mouseClick(MouseEvent event){
+    public void mouseClick(MouseEvent event) {
 
-            TreeItem<Object> item = (TreeItem<Object>) tree.getSelectionModel().getSelectedItem();
+        TreeItem<Object> item = (TreeItem<Object>) tree.getSelectionModel().getSelectedItem();
 
-            System.out.println("Item is null : " +  (item == null));
+        System.out.println("Item is null : " + (item == null));
 
-            counter++;
+        counter++;
 
 
-            if(item != tree.getRoot()){
+        if (item != tree.getRoot()) {
 
-                System.out.println(item);
+            System.out.println(item);
 
-                if(item != null) {
+            if (item != null) {
 
-                    decider(item);
-
-                }
+                decider(item);
 
             }
 
+        }
+
     }
 
-    public void decider(TreeItem<Object> item){
-        if(item.getValue().getClass().getName().equals("com.app.ce216_project.Item")){
-            textSetter((Item)item.getValue());
-        }
-        else if(item.getValue().getClass().getName().equals("com.app.ce216_project.Type")){
-            textSetter((Type)item.getValue());
+    public void decider(TreeItem<Object> item) {
+        if (item.getValue().getClass().getName().equals("com.app.ce216_project.Item")) {
+            textSetter((Item) item.getValue());
+        } else if (item.getValue().getClass().getName().equals("com.app.ce216_project.Type")) {
+            textSetter((Type) item.getValue());
         }
     }
 
-    public void textSetter(Type type){
-       //textArea.setText("Name of the type: "+type.getName()+"\nItems that belongs to this type: "+ type.getItems().toString() + "\nDefault attributes are: "+ type.getDefaultAttributes().toString());
+    public void textSetter(Type type) {
+        //textArea.setText("Name of the type: "+type.getName()+"\nItems that belongs to this type: "+ type.getItems().toString() + "\nDefault attributes are: "+ type.getDefaultAttributes().toString());
         textArea.setText(type.showInformation());
     }
 
-    public void textSetter(Item item){
+    public void textSetter(Item item) {
         //textArea.setText("Name of the item: "+item.getName()+"\nThe type that this item belongs to: "+item.getType().toString()+"\nThe tags of this item: "+item.getTags().toString());
         textArea.setText(item.showInformation());
 
@@ -296,29 +310,29 @@ public class Controller implements Initializable {
 
     public void editTypeName(ActionEvent event) {
         for (int i = 0; i < typeList.size(); i++) {
-            if (typeList.get(i).getName().equals(typeChoice1.getValue().toString())){
+            if (typeList.get(i).getName().equals(typeChoice1C.getValue().toString())) {
                 typeList.get(i).setName(editTypeNameInput.getText());
             }
         }
     }
 
-    public void setEditTypeAttribute(ActionEvent event){
+    public void EditTypeAttribute(ActionEvent event) {
         for (int i = 0; i < typeList.size(); i++) {
-            if (typeList.get(i).getName().equals(typeChoice1.getValue().toString())){
-                typeList.get(i).addAttribute(editTypeAttributeNameInput.getText(),editTypeAttributeValueInput.getText(),"");
+            if (typeList.get(i).getName().equals(typeChoice1C.getValue().toString())) {
+                typeList.get(i).addAttribute(editTypeAttributeNameInput.getText(), editTypeAttributeValueInput.getText(), "");
             }
         }
     }
 
-    public void deleteType(ActionEvent event){
+    public void deleteType(ActionEvent event) {
         for (int i = 0; i < typeList.size(); i++) {
-            if (typeList.get(i).getName().equals(deleteTypeChoiceBox.getValue().toString())){
+            if (typeList.get(i).getName().equals(deleteTypeChoiceBox.getValue().toString())) {
                 typeList.remove(i);
             }
         }
     }
 
-    public void deleteItem(ActionEvent event){
+    public void deleteItem(ActionEvent event) {
         for (int i = 0; i < itemList.size(); i++) {
             if (itemList.get(i).getName().equals(deleteItemChoiceBox.getValue().toString())) {
                 itemList.remove(i);
@@ -329,4 +343,12 @@ public class Controller implements Initializable {
 
 
 
+    public void removeAttribute(ActionEvent event) {
+        for (int i = 0; i < typeList.size(); i++) {
+            if (typeList.get(i).getName().equals(typeChoice1C.getValue().toString())) {
+               typeChoice2.getItems().setAll(typeList.get(i).getDefaultAttributes().toString());
+            }
+        }
+
+    }
 }

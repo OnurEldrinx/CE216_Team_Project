@@ -4,6 +4,7 @@
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
@@ -54,7 +55,7 @@
                   <Insets left="40.0" top="55.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openEditPane" prefHeight="32.0" prefWidth="35.0" style="-fx-background-radius: 100;">
+            <Button mnemonicParsing="false" onAction="#openEditPane" prefHeight="32.0" prefWidth="35.0" style="-fx-background-radius: 100; -fx-background-color: #FFC300#FFC300;">
                <HBox.margin>
                   <Insets left="10.0" top="55.0" />
                </HBox.margin>
@@ -69,7 +70,7 @@
                   <Insets bottom="-20.0" left="-10.0" right="-10.0" top="-20.0" />
                </padding>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openDeletePane" prefHeight="34.0" prefWidth="36.0" style="-fx-background-radius: 100;">
+            <Button mnemonicParsing="false" onAction="#openDeletePane" prefHeight="34.0" prefWidth="36.0" style="-fx-background-radius: 100; -fx-background-color: #F7522F;">
                <HBox.margin>
                   <Insets left="8.0" top="55.0" />
                </HBox.margin>
@@ -122,7 +123,7 @@
       </SplitPane>
       <Pane fx:id="mainAdd" layoutX="330.0" layoutY="250.0" prefHeight="125.0" prefWidth="106.0" visible="false">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ccdeee" height="126.0" opacity="0.25" stroke="BLACK" strokeType="INSIDE" width="106.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#417d7a" height="126.0" opacity="0.65" stroke="BLACK" strokeType="INSIDE" width="106.0" />
             <Button fx:id="newItemButton" layoutX="8.0" layoutY="45.0" mnemonicParsing="false" onAction="#newItemButtonAction" prefHeight="35.0" prefWidth="90.0" text="New Item" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="10.0" />
@@ -142,7 +143,7 @@
       </Pane>
       <Pane fx:id="addAttributeWindow" layoutX="360.0" layoutY="235.0" prefHeight="85.0" prefWidth="200.0" visible="false">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c0e0ff" height="85.0" opacity="0.25" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#417d7a" height="85.0" opacity="0.72" stroke="BLACK" strokeType="INSIDE" width="200.0" />
             <TextField fx:id="attributeNameInput" layoutX="25.0" layoutY="14.0" prefHeight="30.0" prefWidth="150.0" promptText="Attribute Name" />
             <Button fx:id="addAttributeButton" layoutX="25.0" layoutY="51.0" mnemonicParsing="false" onAction="#addAttributeButtonAction" prefHeight="25.0" prefWidth="70.0" text="Add" textAlignment="CENTER" />
             <Button fx:id="finishAttributeWindowButton" layoutX="105.0" layoutY="51.0" mnemonicParsing="false" onAction="#finishAddingAttributeButtonAction" prefHeight="25.0" prefWidth="70.0" text="Finish" textAlignment="CENTER" />
@@ -150,15 +151,15 @@
       </Pane>
       <Pane fx:id="createWindow" layoutX="360.0" layoutY="235.0" prefHeight="85.0" prefWidth="200.0" visible="false">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c0e0ff" height="85.0" opacity="0.25" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#417d7a" height="85.0" opacity="0.63" stroke="BLACK" strokeType="INSIDE" width="200.0" />
             <TextField fx:id="typeNameInput" layoutX="25.0" layoutY="14.0" prefHeight="30.0" prefWidth="150.0" promptText="Type Name" />
             <Button fx:id="createTypeButton" layoutX="105.0" layoutY="51.0" mnemonicParsing="false" onAction="#createTypeButtonAction" prefHeight="26.0" prefWidth="70.0" text="Create" textAlignment="CENTER" />
             <Button layoutX="25.0" layoutY="51.0" mnemonicParsing="false" onAction="#createTypeCancelButtonAction" prefHeight="26.0" prefWidth="70.0" text="Cancel" textAlignment="CENTER" />
          </children>
       </Pane>
-      <Pane fx:id="itemCreateWindow" layoutX="350.0" layoutY="260.0" prefHeight="126.0" prefWidth="315.0" visible="false">
+      <Pane fx:id="itemCreateWindow" layoutX="350.0" layoutY="260.0" opacity="0.81" prefHeight="126.0" prefWidth="315.0" visible="false">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c0e0ff" height="126.0" opacity="0.25" stroke="BLACK" strokeType="INSIDE" width="315.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#417d7a" height="126.0" stroke="BLACK" strokeType="INSIDE" width="315.0" />
             <Button layoutX="5.0" layoutY="70.0" mnemonicParsing="false" onAction="#createItemCancelButtonAction" prefHeight="25.0" prefWidth="95.0" text="Cancel" />
             <Button layoutX="110.0" layoutY="70.0" mnemonicParsing="false" onAction="#createItemButtonAction" prefHeight="19.0" prefWidth="95.0" text="Create" />
             <ChoiceBox fx:id="typeChoice" layoutX="210.0" layoutY="35.0" prefHeight="30.0" prefWidth="100.0" />
@@ -167,45 +168,159 @@
       </Pane>
       <Pane fx:id="editPane" layoutX="111.0" layoutY="144.0" prefHeight="338.0" prefWidth="689.0" visible="false">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a4c5e4" height="346.0" layoutX="-4.0" layoutY="-6.0" stroke="BLACK" strokeType="INSIDE" width="696.0" />
-            <Label layoutX="8.0" layoutY="8.0" prefHeight="32.0" prefWidth="90.0" text="Edit a type:" />
-            <Label layoutX="407.0" layoutY="11.0" prefHeight="26.0" prefWidth="138.0" text="Edit an item:" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#417d7a" height="346.0" layoutX="-4.0" layoutY="-6.0" stroke="BLACK" strokeType="INSIDE" width="696.0" />
+            <Label layoutX="8.0" layoutY="8.0" prefHeight="32.0" prefWidth="90.0" text="Edit a type:" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
+            <Label layoutX="407.0" layoutY="11.0" prefHeight="26.0" prefWidth="138.0" text="Edit an item:" textFill="WHITE" />
             <ChoiceBox fx:id="editItemChoiceBox" layoutX="407.0" layoutY="44.0" prefHeight="26.0" prefWidth="138.0" />
-            <Label layoutX="49.0" layoutY="95.0" prefHeight="35.0" prefWidth="76.0" text="New name:" />
+            <Label layoutX="49.0" layoutY="95.0" prefHeight="35.0" prefWidth="76.0" text="New name:" textFill="WHITE" />
             <TextArea fx:id="editTypeNameInput" layoutX="143.0" layoutY="93.0" prefHeight="39.0" prefWidth="119.0" />
-            <Label layoutX="7.0" layoutY="152.0" text="Add default attribute:" />
+            <Label layoutX="7.0" layoutY="152.0" text="Add default attribute:" textFill="WHITE" />
             <TextArea fx:id="editTypeAttributeNameInput" layoutX="143.0" layoutY="167.0" minHeight="1.0" minWidth="1.0" prefHeight="26.0" prefWidth="119.0" />
-            <ChoiceBox layoutX="174.0" layoutY="258.0" prefHeight="26.0" prefWidth="119.0" />
-            <Label layoutX="7.0" layoutY="262.0" text="Remove default attribute:" />
-            <Label layoutX="407.0" layoutY="115.0" prefHeight="35.0" prefWidth="76.0" text="New name:" />
+            <ChoiceBox fx:id="typeChoice2" layoutX="174.0" layoutY="258.0" prefHeight="26.0" prefWidth="119.0" />
+            <Label layoutX="7.0" layoutY="262.0" text="Remove default attribute:" textFill="WHITE" />
+            <Label layoutX="407.0" layoutY="115.0" prefHeight="35.0" prefWidth="76.0" text="New name:" textFill="WHITE" />
             <TextArea fx:id="editItemNameInput" layoutX="501.0" layoutY="112.0" prefHeight="39.0" prefWidth="119.0" />
-            <Label layoutX="407.0" layoutY="172.0" text="Add tag:" />
+            <Label layoutX="407.0" layoutY="172.0" text="Add tag:" textFill="WHITE" />
             <TextArea fx:id="editItemAttributeInput" layoutX="501.0" layoutY="160.0" prefHeight="39.0" prefWidth="119.0" />
-            <Label layoutX="411.0" layoutY="226.0" text="Remove tag:" />
+            <Label layoutX="411.0" layoutY="226.0" text="Remove tag:" textFill="WHITE" />
             <ChoiceBox layoutX="501.0" layoutY="217.0" prefHeight="26.0" prefWidth="119.0" />
             <Button layoutX="658.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeEditPane" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;" text="X" />
-            <Button layoutX="272.0" layoutY="106.0" mnemonicParsing="false" onAction="#editTypeName" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;" />
-            <Button layoutX="272.0" layoutY="180.0" mnemonicParsing="false" onAction="#setEditTypeAttribute" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;" />
-            <Button layoutX="306.0" layoutY="258.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;" />
-            <Button layoutX="630.0" layoutY="119.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;" />
-            <Button layoutX="630.0" layoutY="167.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;" />
-            <Button layoutX="630.0" layoutY="217.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;" />
-            <ChoiceBox fx:id="typeChoice1" layoutX="15.0" layoutY="42.0" prefHeight="30.0" prefWidth="136.0" />
-            <Label layoutX="69.0" layoutY="172.0" text="Name:" />
-            <Label layoutX="70.0" layoutY="201.0" prefHeight="17.0" prefWidth="52.0" text="Value:" />
+            <Button layoutX="272.0" layoutY="99.0" mnemonicParsing="false" onAction="#editTypeName" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;">
+               <padding>
+                  <Insets bottom="-10.0" left="-10.0" right="-10.0" top="-10.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#addButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@add_symbol.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                  </ImageView>
+               </graphic></Button>
+            <Label layoutX="69.0" layoutY="172.0" text="Name:" textFill="WHITE" />
+            <Label layoutX="70.0" layoutY="201.0" prefHeight="17.0" prefWidth="52.0" text="Value:" textFill="WHITE" />
             <TextArea fx:id="editTypeAttributeValueInput" layoutX="143.0" layoutY="197.0" minHeight="1.0" minWidth="1.0" prefHeight="26.0" prefWidth="119.0" />
+            <Button layoutX="279.0" layoutY="180.0" mnemonicParsing="false" onAction="#editTypeName" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;">
+               <padding>
+                  <Insets bottom="-10.0" left="-10.0" right="-10.0" top="-10.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#addButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@add_symbol.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="307.0" layoutY="258.0" mnemonicParsing="false" onAction="#editTypeName" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;">
+               <padding>
+                  <Insets bottom="-10.0" left="-10.0" right="-10.0" top="-10.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#addButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@add_symbol.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="630.0" layoutY="117.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;">
+               <padding>
+                  <Insets bottom="-10.0" left="-10.0" right="-10.0" top="-10.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#addButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@add_symbol.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="630.0" layoutY="168.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;">
+               <padding>
+                  <Insets bottom="-10.0" left="-10.0" right="-10.0" top="-10.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#addButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@add_symbol.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="630.0" layoutY="217.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;">
+               <padding>
+                  <Insets bottom="-10.0" left="-10.0" right="-10.0" top="-10.0" />
+               </padding>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#addButtonAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@add_symbol.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <ComboBox fx:id="typeChoice1C" layoutX="23.0" layoutY="44.0" onAction="#removeAttribute" prefWidth="150.0" />
          </children>
       </Pane>
       <Pane fx:id="deletePane" layoutX="150.0" layoutY="116.0" prefHeight="239.0" prefWidth="620.0" visible="false">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9dbedd" height="248.0" layoutX="-3.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" width="627.0" />
-            <Label layoutX="136.0" layoutY="62.0" text="Delete Type" />
-            <Label layoutX="402.0" layoutY="62.0" text="Delete Item" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#417d7a" height="248.0" layoutX="-3.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" width="627.0" />
+            <Label layoutX="124.0" layoutY="59.0" text="Delete Type" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
+            <Label layoutX="390.0" layoutY="59.0" text="Delete Item" textFill="#f8f8f8">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
             <ChoiceBox fx:id="deleteTypeChoiceBox" layoutX="94.0" layoutY="98.0" prefWidth="150.0" />
             <ChoiceBox fx:id="deleteItemChoiceBox" layoutX="358.0" layoutY="99.0" prefWidth="150.0" />
-            <Button layoutX="142.0" layoutY="149.0" mnemonicParsing="false" onAction="#deleteType" text="Button" />
-            <Button layoutX="406.0" layoutY="149.0" mnemonicParsing="false" onAction="#deleteItem" text="Button" />
             <Button layoutX="592.0" layoutY="1.0" mnemonicParsing="false" onAction="#closeDeletePane" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;" text="X" />
+            <Button layoutX="151.0" layoutY="145.0" mnemonicParsing="false" onAction="#deleteType" prefHeight="34.0" prefWidth="36.0" style="-fx-background-radius: 100; -fx-background-color: #F7522F;">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@delete.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets bottom="-20.0" left="-10.0" right="-10.0" top="-20.0" />
+               </padding>
+            </Button>
+            <Button layoutX="414.0" layoutY="146.0" mnemonicParsing="false" onAction="#deleteItem" prefHeight="34.0" prefWidth="36.0" style="-fx-background-radius: 100; -fx-background-color: #F7522F;">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@delete.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets bottom="-20.0" left="-10.0" right="-10.0" top="-20.0" />
+               </padding>
+            </Button>
          </children>
       </Pane>
    </children>

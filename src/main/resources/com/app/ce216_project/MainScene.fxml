@@ -168,7 +168,7 @@
       </Pane>
       <Pane fx:id="editPane" layoutX="111.0" layoutY="144.0" prefHeight="338.0" prefWidth="689.0" visible="false">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a4c5e4" height="346.0" layoutX="-4.0" layoutY="-6.0" stroke="BLACK" strokeType="INSIDE" width="696.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4e6b50" height="346.0" layoutX="-4.0" layoutY="-6.0" stroke="BLACK" strokeType="INSIDE" width="696.0" />
             <Button layoutX="658.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeEditPane" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;" text="X" />
             <ChoiceBox fx:id="typeOrItemChoiceBox" layoutX="14.0" layoutY="13.0" prefHeight="30.0" prefWidth="200.0" />
             <Button layoutX="220.0" layoutY="13.0" mnemonicParsing="false" onAction="#chooseEditable" prefHeight="30.0" prefWidth="60.0" text="Next" />

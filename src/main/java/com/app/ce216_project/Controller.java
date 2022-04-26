@@ -358,7 +358,7 @@ public class Controller implements Initializable {
     public void removeAttribute(ActionEvent event) {
         for (int i = 0; i < typeList.size(); i++) {
             if (typeList.get(i).getName().equals(typeChoice1C.getValue().toString())) {
-               typeChoice2.getItems().setAll(typeList.get(i).getDefaultAttributes().toString());
+               typeChoice2.getItems().addAll(typeList.get(i).getDefaultAttributes());
             }
         }
 
@@ -384,7 +384,7 @@ public class Controller implements Initializable {
     public void removeTag(ActionEvent event) {
         for (int i = 0; i < itemList.size(); i++) {
             if (itemList.get(i).getName().equals(editItemComboBox.getValue().toString())) {
-                itemChoice.getItems().setAll(itemList.get(i).getTags().toString());
+                itemChoice.getItems().addAll(itemList.get(i).getTags());
             }
         }
 

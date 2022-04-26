@@ -172,14 +172,14 @@
             <Button layoutX="658.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeEditPane" prefHeight="26.0" prefWidth="28.0" style="-fx-background-radius: 100;" text="X" />
             <ChoiceBox fx:id="typeOrItemChoiceBox" layoutX="14.0" layoutY="13.0" prefHeight="30.0" prefWidth="200.0" />
             <Button layoutX="220.0" layoutY="13.0" mnemonicParsing="false" onAction="#chooseEditable" prefHeight="30.0" prefWidth="60.0" text="Next" />
-            <Pane fx:id="editItemPane" layoutX="14.0" layoutY="62.0" prefHeight="262.0" prefWidth="650.0" visible="false">
+            <Pane fx:id="editItemPane" layoutX="14.0" layoutY="62.0" prefHeight="262.0" prefWidth="650.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d1c7f0" height="262.0" stroke="BLACK" strokeType="INSIDE" width="650.0" />
                   <ChoiceBox fx:id="editItemChoiceBox" layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="150.0" />
                   <TextField fx:id="editItemNameInput" layoutX="14.0" layoutY="59.0" prefHeight="30.0" prefWidth="150.0" promptText="New Name" />
                   <RadioButton layoutX="170.0" layoutY="65.0" mnemonicParsing="false" onAction="#editItemName" prefHeight="18.0" prefWidth="63.0" text="Apply" />
                   <ChoiceBox fx:id="defaultItemAttributesChoiceBox" layoutX="14.0" layoutY="101.0" prefHeight="30.0" prefWidth="150.0" />
-                  <RadioButton layoutX="170.0" layoutY="20.0" mnemonicParsing="false" onAction="#chooseAItemToEdit" prefHeight="18.0" prefWidth="63.0" text="Choose" />
+                  <RadioButton layoutX="170.0" layoutY="20.0" mnemonicParsing="false" onAction="#chooseAItemToEdit" prefHeight="18.0" prefWidth="72.0" text="Choose" />
                   <RadioButton layoutX="325.0" layoutY="107.0" mnemonicParsing="false" onAction="#editDefaultItemAttribute" prefHeight="18.0" prefWidth="63.0" text="Apply" />
                   <TextField fx:id="editItemAttributeValueInput" layoutX="170.0" layoutY="101.0" prefHeight="30.0" prefWidth="150.0" promptText="New Value" />
                   <TextField fx:id="newItemAttributeNameOnEdit" layoutX="14.0" layoutY="139.0" prefHeight="30.0" prefWidth="150.0" promptText="Attribute Name" />

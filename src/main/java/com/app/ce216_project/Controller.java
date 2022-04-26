@@ -339,10 +339,13 @@ public class Controller implements Initializable {
 
         if (typeOrItemChoiceBox.getValue().equals("Type")){
 
+            editItemPane.setVisible(false);
             editTypePane.setVisible(true);
+
 
         }else{
 
+            editTypePane.setVisible(false);
             editItemPane.setVisible(true);
 
         }
@@ -506,6 +509,7 @@ public class Controller implements Initializable {
             if(typeList.get(k).getName().equals(c.getValue().toString())){
 
                 removeFromTypeChoiceBoxes(typeList.get(k));
+                deleteItemChoiceBox.getItems().removeAll(typeList.get(k).getItems());
                 typeList.remove(k);
                 break;
             }
@@ -560,6 +564,7 @@ public class Controller implements Initializable {
             if(itemList.get(k).getName().equals(c.getValue().toString())){
 
                 removeFromItemChoiceBoxes(itemList.get(k));
+
                 itemList.remove(k);
 
                 break;

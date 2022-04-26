@@ -180,6 +180,9 @@ public class Controller implements Initializable {
     }
 
     public void openEditPane(ActionEvent event) throws  IOException{
+
+
+
         editPane.setVisible(true);
     }
 
@@ -349,6 +352,7 @@ public class Controller implements Initializable {
     public void chooseATypeToEdit(ActionEvent event){
 
         editTargetType = (Type)editTypeChoiceBox.getValue();
+        defaultTypeAttributesChoiceBox.getItems().clear();
         defaultTypeAttributesChoiceBox.getItems().addAll(editTargetType.getDefaultAttributes());
 
     }
@@ -356,6 +360,7 @@ public class Controller implements Initializable {
     public void chooseAItemToEdit(ActionEvent event){
 
         editTargetItem = (Item) editItemChoiceBox.getValue();
+        defaultItemAttributesChoiceBox.getItems().clear();
         defaultItemAttributesChoiceBox.getItems().addAll(editTargetItem.getType().getDefaultAttributes());
 
     }
@@ -485,30 +490,55 @@ public class Controller implements Initializable {
 
 
     public void deleteType(ActionEvent event){
-        for (int i = 0; i < typeList.size(); i++) {
-            if (typeList.get(i).getName().equals(deleteTypeChoiceBox.getValue().toString())){
 
+        TreeItem c = null;
 
-                TreeItem c = typeNodes.get(i);
+        for (int i = 0; i < typeNodes.size(); i++) {
+            if (typeNodes.get(i).getValue().toString().equals(deleteTypeChoiceBox.getValue().toString())){
 
-                c.getChildren().clear();
-
-                c.getParent().getChildren().remove(c);
-                typeList.remove(i);
-                typeNodes.remove(i);
-
-                removeFromTypeChoiceBoxes(typeList.get(i));
-
-
-
-                typeChoice.getItems().clear();
-                typeChoice.getItems().addAll(typeList);
-                deleteTypeChoiceBoxRefresh();
-
-
+                c = typeNodes.get(i);
                 break;
             }
         }
+
+        for (int k=0;k<typeList.size();k++){
+
+            if(typeList.get(k).getName().equals(c.getValue().toString())){
+
+                removeFromTypeChoiceBoxes(typeList.get(k));
+                typeList.remove(k);
+                break;
+            }
+
+        }
+
+        for (int k=0;k<itemList.size();k++){
+
+            for (int l=0;l<c.getChildren().size();l++){
+
+
+                if(itemList.get(k).getName().equals(c.getChildren().get(l).toString())){
+
+                    removeFromItemChoiceBoxes(itemList.get(k));
+                    itemList.remove(k);
+                    itemNodes.remove(k);
+
+
+                }
+
+            }
+
+        }
+
+        c.getChildren().clear();
+
+        c.getParent().getChildren().remove(c);
+
+        typeNodes.remove(c);
+
+        typeChoice.getItems().clear();
+        typeChoice.getItems().addAll(typeList);
+        deleteTypeChoiceBoxRefresh();
 
         tree.refresh();
     }

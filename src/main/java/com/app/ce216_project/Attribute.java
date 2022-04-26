@@ -11,6 +11,12 @@ public class Attribute {
         this.value = value;
     }
 
+    public Attribute(String name){
+
+        this.name = name;
+
+    }
+
     public void edit(){ }
     public void delete(){ }
 
@@ -38,5 +44,10 @@ public class Attribute {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

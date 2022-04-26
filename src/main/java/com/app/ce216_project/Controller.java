@@ -17,23 +17,37 @@ import java.util.*;
 
 public class Controller implements Initializable {
 
+
+    public Pane editTypePane;
+    public ChoiceBox editTypeChoiceBox;
+    public Pane editItemPane;
+    public TextField editTypeNameInput;
+    public TextField addTypeAttributeNameInput;
+    public ChoiceBox defaultTypeAttributesChoiceBox;
+    public ChoiceBox itemTagsChoiceBox;
+    public TextField tagInput;
+    public TextField newAttributeValueOnEdit;
+    public TextField newItemAttributeNameOnEdit;
+    public TextField editItemAttributeValueInput;
+    public ChoiceBox defaultItemAttributesChoiceBox;
+    public TextField editItemNameInput;
+    public ChoiceBox itemAttributesChoiceBox;
+    @FXML
+    private ChoiceBox<String> typeOrItemChoiceBox;
+
     ArrayList<Type> typeList = new ArrayList<>();
     ArrayList<Item> itemList = new ArrayList<>();
     ArrayList<TreeItem<Object>> typeNodes = new ArrayList<>();
     ArrayList<TreeItem<Object>> itemNodes = new ArrayList<>();
 
+    private Type editTargetType;
+
+    private Item editTargetItem;
 
     public TextField attributeNameInput;
     public TextField attributeValueInput;
-
     public TextArea attributeDescriptionInput;
 
-    public TextArea editTypeNameInput;
-    public TextArea editItemNameInput;
-
-    public TextArea editTypeAttributeNameInput;
-    public TextArea editTypeAttributeValueInput;
-    public TextArea editItemAttributeInput;
 
     public Button addAttributeButton;
     public Button finishAttributeWindowButton;
@@ -74,10 +88,6 @@ public class Controller implements Initializable {
 
     @FXML
     private ChoiceBox typeChoice;
-    @FXML
-    private ChoiceBox typeChoice1;
-    @FXML
-    private ChoiceBox typeChoice2;
 
     @FXML
     private ChoiceBox editItemChoiceBox;
@@ -108,27 +118,53 @@ public class Controller implements Initializable {
         typeChoice.setValue("Types");
         typeChoice.getItems().addAll(typeList);
 
-        typeChoice1.setValue("Types");
-        typeChoice1.getItems().addAll(typeList);
+
+        typeOrItemChoiceBox.setValue("Edit Type/Item");
+        typeOrItemChoiceBox.getItems().add("Type");
+        typeOrItemChoiceBox.getItems().add("Item");
+
+        defaultTypeAttributesChoiceBox.setValue("Default Attributes");
 
         deleteTypeChoiceBox.setValue("Types");
         deleteItemChoiceBox.setValue("Items");
 
     }
 
-    public void choiceBoxRefresh(){
-        typeChoice.getItems().addAll(typeList);
+
+    public void addToTypeChoiceBoxes(Type t){
+
+        typeChoice.getItems().add(t);
+        editTypeChoiceBox.getItems().add(t);
+
     }
 
-    public void choice1BoxRefresh(){
-        typeChoice1.getItems().addAll(typeList);
+    public void removeFromTypeChoiceBoxes(Type t){
+
+        typeChoice.getItems().remove(t);
+        editTypeChoiceBox.getItems().remove(t);
+
     }
+
+    public void addToItemChoiceBoxes(Item i){
+
+        editItemChoiceBox.getItems().add(i);
+
+    }
+
+    public void removeFromItemChoiceBoxes(Item i){
+
+        editItemChoiceBox.getItems().remove(i);
+
+    }
+
 
     public void deleteTypeChoiceBoxRefresh(){
+        deleteTypeChoiceBox.getItems().clear();
         deleteTypeChoiceBox.getItems().addAll(typeList);
     }
 
     public void deleteItemChoiceBoxRefresh(){
+        deleteItemChoiceBox.getItems().clear();
         deleteItemChoiceBox.getItems().addAll(itemList);
     }
 
@@ -144,7 +180,6 @@ public class Controller implements Initializable {
     }
 
     public void openEditPane(ActionEvent event) throws  IOException{
-        choice1BoxRefresh();
         editPane.setVisible(true);
     }
 
@@ -199,7 +234,7 @@ public class Controller implements Initializable {
         //createWindow.setVisible(false);
         addAttributeWindow.setVisible(true);
         typeList.add(t);
-        choiceBoxRefresh();
+        addToTypeChoiceBoxes(t);
         createWindow.setVisible(false);
 
     }
@@ -224,6 +259,7 @@ public class Controller implements Initializable {
         //tree.getRoot().getChildren().add(treeItem);
         System.out.println(tree.getRoot().getChildren().size());
         //createWindow.setVisible(false);
+        addToItemChoiceBoxes(item);
         itemCreateWindow.setVisible(false);
     }
 
@@ -294,38 +330,226 @@ public class Controller implements Initializable {
 
     }
 
-    public void editTypeName(ActionEvent event) {
-        for (int i = 0; i < typeList.size(); i++) {
-            if (typeList.get(i).getName().equals(typeChoice1.getValue().toString())){
-                typeList.get(i).setName(editTypeNameInput.getText());
-            }
+
+
+    public void chooseEditable(ActionEvent event){
+
+        if (typeOrItemChoiceBox.getValue().equals("Type")){
+
+            editTypePane.setVisible(true);
+
+        }else{
+
+            editItemPane.setVisible(true);
+
         }
+
     }
 
-    public void setEditTypeAttribute(ActionEvent event){
-        for (int i = 0; i < typeList.size(); i++) {
-            if (typeList.get(i).getName().equals(typeChoice1.getValue().toString())){
-                typeList.get(i).addAttribute(editTypeAttributeNameInput.getText(),editTypeAttributeValueInput.getText(),"");
-            }
-        }
+    public void chooseATypeToEdit(ActionEvent event){
+
+        editTargetType = (Type)editTypeChoiceBox.getValue();
+        defaultTypeAttributesChoiceBox.getItems().addAll(editTargetType.getDefaultAttributes());
+
     }
+
+    public void chooseAItemToEdit(ActionEvent event){
+
+        editTargetItem = (Item) editItemChoiceBox.getValue();
+        defaultItemAttributesChoiceBox.getItems().addAll(editTargetItem.getType().getDefaultAttributes());
+
+    }
+
+
+    public void editTypeName(){
+
+
+        for (Type type:typeList){
+
+            if(type.getName().equals(editTargetType.getName())){
+
+                type.setName(editTypeNameInput.getText());
+                typeNodes.get(typeList.indexOf(type)).setValue(type);
+                tree.refresh();
+                break;
+
+            }
+
+        }
+
+    }
+
+    public void editItemName(){
+
+        for (Item item:itemList){
+
+            if(item.getName().equals(editTargetItem.getName())){
+
+                item.setName(editItemNameInput.getText());
+                itemNodes.get(itemList.indexOf(item)).setValue(item);
+                tree.refresh();
+                break;
+
+            }
+
+        }
+
+
+    }
+
+    public void editDefaultItemAttribute(){
+
+        for (Attribute attribute:editTargetItem.getType().getDefaultAttributes()){
+
+            if(attribute.getName().equals(defaultItemAttributesChoiceBox.getValue().toString())){
+
+                attribute.setValue(editItemAttributeValueInput.getText());
+                System.out.println(attribute.getName() + "  " + attribute.getValue());
+                break;
+
+            }
+
+        }
+
+    }
+
+    public void addNewItemAttribute(){
+
+        editTargetItem.getType().getDefaultAttributes().add(new Attribute(newItemAttributeNameOnEdit.getText(),newAttributeValueOnEdit.getText()));
+        defaultItemAttributesChoiceBox.getItems().clear();
+        defaultItemAttributesChoiceBox.getItems().addAll(editTargetItem.getType().getDefaultAttributes());
+
+        itemAttributesChoiceBox.getItems().clear();
+        itemAttributesChoiceBox.getItems().addAll(editTargetItem.getType().getDefaultAttributes());
+    }
+
+
+    public void addTypeAttributeOnEdit(){
+
+        editTargetType.getDefaultAttributes().add(new Attribute(addTypeAttributeNameInput.getText()));
+        defaultTypeAttributesChoiceBox.getItems().clear();
+        defaultTypeAttributesChoiceBox.getItems().addAll(editTargetType.getDefaultAttributes());
+
+    }
+
+    public void removeFromTypeDefaultAttributes(){
+
+        editTargetType.getDefaultAttributes().remove((Attribute)defaultTypeAttributesChoiceBox.getValue());
+        defaultTypeAttributesChoiceBox.getItems().clear();
+        defaultTypeAttributesChoiceBox.getItems().addAll(editTargetType.getDefaultAttributes());
+
+    }
+
+    public void removeFromItemAttributes(){
+
+        editTargetItem.getType().getDefaultAttributes().remove((Attribute) itemAttributesChoiceBox.getValue());
+
+        defaultItemAttributesChoiceBox.getItems().clear();
+        defaultItemAttributesChoiceBox.getItems().addAll(editTargetItem.getType().getDefaultAttributes());
+
+        itemAttributesChoiceBox.getItems().clear();
+        itemAttributesChoiceBox.getItems().addAll(editTargetItem.getType().getDefaultAttributes());
+
+    }
+
+    public void addItemTag(){
+
+        editTargetItem.getTags().add(new Tag(tagInput.getText()));
+        itemTagsChoiceBox.getItems().clear();
+        itemTagsChoiceBox.getItems().addAll(editTargetItem.getTags());
+
+    }
+
+    public void deleteTag(){
+
+        editTargetItem.getTags().remove((Tag)itemTagsChoiceBox.getValue());
+        itemTagsChoiceBox.getItems().clear();
+        itemTagsChoiceBox.getItems().addAll(editTargetItem.getTags());
+    }
+
+
+    public void closeEditTypePane(){
+
+        editTypePane.setVisible(false);
+
+    }
+
+    public void closeEditItemPane(){
+
+        editItemPane.setVisible(false);
+
+    }
+
+
+
+
 
     public void deleteType(ActionEvent event){
         for (int i = 0; i < typeList.size(); i++) {
             if (typeList.get(i).getName().equals(deleteTypeChoiceBox.getValue().toString())){
+
+
+                TreeItem c = typeNodes.get(i);
+
+                c.getChildren().clear();
+
+                c.getParent().getChildren().remove(c);
                 typeList.remove(i);
+                typeNodes.remove(i);
+
+                removeFromTypeChoiceBoxes(typeList.get(i));
+
+
+
+                typeChoice.getItems().clear();
+                typeChoice.getItems().addAll(typeList);
+                deleteTypeChoiceBoxRefresh();
+
+
+                break;
             }
         }
+
+        tree.refresh();
     }
 
     public void deleteItem(ActionEvent event){
-        for (int i = 0; i < itemList.size(); i++) {
-            if (itemList.get(i).getName().equals(deleteItemChoiceBox.getValue().toString())) {
-                itemList.remove(i);
+
+        TreeItem c = null;
+
+        for (int i = 0; i < itemNodes.size(); i++) {
+            if (itemNodes.get(i).getValue().toString().equals(deleteItemChoiceBox.getValue().toString())) {
+
+                c = itemNodes.get(i);
+                break;
             }
         }
+
+        for (int k=0;k<itemList.size();k++){
+
+            if(itemList.get(k).getName().equals(c.getValue().toString())){
+
+                removeFromItemChoiceBoxes(itemList.get(k));
+                itemList.remove(k);
+
+                break;
+            }
+
+        }
+
+        itemNodes.remove(c);
+
+        assert c != null;
+        c.getParent().getChildren().remove(c);
+
+
+        deleteItemChoiceBoxRefresh();
+
+
         tree.refresh();
     }
+
+
 
 
 

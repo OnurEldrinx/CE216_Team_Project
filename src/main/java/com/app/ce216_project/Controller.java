@@ -211,47 +211,101 @@ public class Controller implements Initializable {
 
     public void createTypeButtonAction(ActionEvent event) {
 
-        Type t = Catalog.getCatalogInstance().createType(new Type(typeNameInput.getText()));
-        Catalog.getCatalogInstance().types.add(t);
-        lastCreatedType = t;
-        TreeItem<Object> treeItem = new TreeItem<>(t);
-        typeNodes.add(treeItem);
-        tree.getRoot().getChildren().add(treeItem);
-        System.out.println(tree.getRoot().getChildren().size());
-
-        //createWindow.setVisible(false);
-        addAttributeWindow.setVisible(true);
-        typeList.add(t);
-        choiceBoxRefresh();
-        ComboBoxRefresh();
-        createWindow.setVisible(false);
-
-    }
-
-    @FXML
-    public void createItemButtonAction(ActionEvent event) throws IOException {
-        Item item = Catalog.getCatalogInstance().createItem(new Item(itemNameInput.getText(), (Type) typeChoice.getValue()));
-        Catalog.getCatalogInstance().items.add(item);
-        item.getType().getItems().add(item);
-        TreeItem<Object> treeItem = new TreeItem<>(item);
-        itemNodes.add(treeItem);
-        mainAdd.setVisible(false);
-        itemList.add(item);
-
-        for (int i = 0; i < typeNodes.size(); i++) {
-            if (Objects.equals(typeNodes.get(i).getValue(), item.getType())) {
-                typeNodes.get(i).getChildren().add(treeItem);
+        for (Type type : typeList) {
+            if (typeNameInput.getText().equals(type.getName())) {
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setContentText("A type with the same name is already defined.");
+                a.show();
                 break;
             }
+
+            Type t = Catalog.getCatalogInstance().createType(new Type(typeNameInput.getText()));
+            Catalog.getCatalogInstance().types.add(t);
+            lastCreatedType = t;
+            TreeItem<Object> treeItem = new TreeItem<>(t);
+            typeNodes.add(treeItem);
+            tree.getRoot().getChildren().add(treeItem);
+            System.out.println(tree.getRoot().getChildren().size());
+
+            //createWindow.setVisible(false);
+            addAttributeWindow.setVisible(true);
+            typeList.add(t);
+            choiceBoxRefresh();
+            ComboBoxRefresh();
+            createWindow.setVisible(false);
+
+        }
+        if(typeList.size() == 0){
+            Type t = Catalog.getCatalogInstance().createType(new Type(typeNameInput.getText()));
+            Catalog.getCatalogInstance().types.add(t);
+            lastCreatedType = t;
+            TreeItem<Object> treeItem = new TreeItem<>(t);
+            typeNodes.add(treeItem);
+            tree.getRoot().getChildren().add(treeItem);
+            System.out.println(tree.getRoot().getChildren().size());
+
+            //createWindow.setVisible(false);
+            addAttributeWindow.setVisible(true);
+            typeList.add(t);
+            choiceBoxRefresh();
+            ComboBoxRefresh();
+            createWindow.setVisible(false);
+        }
+    }
+    @FXML
+    public void createItemButtonAction(ActionEvent event) throws IOException {
+
+        for(Item ittem : itemList) {
+            if (itemNameInput.getText().equals(ittem.getName())) {
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setContentText("An item with the same name is already defined.");
+                a.show();
+                break;
+            }
+
+            Item item = Catalog.getCatalogInstance().createItem(new Item(itemNameInput.getText(), (Type) typeChoice.getValue()));
+            Catalog.getCatalogInstance().items.add(item);
+            item.getType().getItems().add(item);
+            TreeItem<Object> treeItem = new TreeItem<>(item);
+            itemNodes.add(treeItem);
+            mainAdd.setVisible(false);
+            itemList.add(item);
+
+            for (int i = 0; i < typeNodes.size(); i++) {
+                if (Objects.equals(typeNodes.get(i).getValue(), item.getType())) {
+                    typeNodes.get(i).getChildren().add(treeItem);
+                    break;
+                }
+            }
+
+            //tree.getRoot().getChildren().add(treeItem);
+            System.out.println(tree.getRoot().getChildren().size());
+            //createWindow.setVisible(false);
+
+            itemCreateWindow.setVisible(false);
+            EditItemComboBoxRefresh();
         }
 
-        //tree.getRoot().getChildren().add(treeItem);
-        System.out.println(tree.getRoot().getChildren().size());
-        //createWindow.setVisible(false);
-        itemCreateWindow.setVisible(false);
-        EditItemComboBoxRefresh();
-    }
+        if(itemList.size() == 0){
 
+            Item item = Catalog.getCatalogInstance().createItem(new Item(itemNameInput.getText(), (Type) typeChoice.getValue()));
+            Catalog.getCatalogInstance().items.add(item);
+            item.getType().getItems().add(item);
+            TreeItem<Object> treeItem = new TreeItem<>(item);
+            itemNodes.add(treeItem);
+            mainAdd.setVisible(false);
+            itemList.add(item);
+
+            for (int i = 0; i < typeNodes.size(); i++) {
+                if (Objects.equals(typeNodes.get(i).getValue(), item.getType())) {
+                    typeNodes.get(i).getChildren().add(treeItem);
+                    break;
+                }
+            }
+            itemCreateWindow.setVisible(false);
+            EditItemComboBoxRefresh();
+        }
+    }
     public void createTypeCancelButtonAction(ActionEvent event) {
 
         createWindow.setVisible(false);

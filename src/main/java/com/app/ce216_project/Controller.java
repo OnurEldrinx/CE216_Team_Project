@@ -510,29 +510,31 @@ public class Controller implements Initializable {
 
                 removeFromTypeChoiceBoxes(typeList.get(k));
                 deleteItemChoiceBox.getItems().removeAll(typeList.get(k).getItems());
+                editItemChoiceBox.getItems().removeAll(typeList.get(k).getItems());
                 typeList.remove(k);
                 break;
             }
 
         }
 
-        for (int k=0;k<itemList.size();k++){
+        for (int k=0;k<c.getChildren().size();k++){
 
-            for (int l=0;l<c.getChildren().size();l++){
+            for (int l=0;l<itemList.size();l++){
 
 
-                if(itemList.get(k).getName().equals(c.getChildren().get(l).toString())){
+                if(itemList.get(l).getName().equals(c.getChildren().get(k).toString())){
 
-                    removeFromItemChoiceBoxes(itemList.get(k));
-                    itemList.remove(k);
-                    itemNodes.remove(k);
-
+                    removeFromItemChoiceBoxes(itemList.get(l));
+                    itemList.remove(l);
+                    itemNodes.remove(l);
 
                 }
 
             }
 
         }
+
+
 
         c.getChildren().clear();
 
@@ -542,6 +544,9 @@ public class Controller implements Initializable {
 
         typeChoice.getItems().clear();
         typeChoice.getItems().addAll(typeList);
+
+
+
         deleteTypeChoiceBoxRefresh();
 
         tree.refresh();

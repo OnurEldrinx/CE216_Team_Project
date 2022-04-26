@@ -101,11 +101,10 @@ public class Controller implements Initializable {
     @FXML
     private TextArea textArea;
 
-    int counter =0;
+    int counter = 0;
 
     @FXML
     private Pane editPane;
-
 
 
     @Override
@@ -131,70 +130,69 @@ public class Controller implements Initializable {
     }
 
 
-    public void addToTypeChoiceBoxes(Type t){
+    public void addToTypeChoiceBoxes(Type t) {
 
         typeChoice.getItems().add(t);
         editTypeChoiceBox.getItems().add(t);
 
     }
 
-    public void removeFromTypeChoiceBoxes(Type t){
+    public void removeFromTypeChoiceBoxes(Type t) {
 
         typeChoice.getItems().remove(t);
         editTypeChoiceBox.getItems().remove(t);
 
     }
 
-    public void addToItemChoiceBoxes(Item i){
+    public void addToItemChoiceBoxes(Item i) {
 
         editItemChoiceBox.getItems().add(i);
 
     }
 
-    public void removeFromItemChoiceBoxes(Item i){
+    public void removeFromItemChoiceBoxes(Item i) {
 
         editItemChoiceBox.getItems().remove(i);
 
     }
 
 
-    public void deleteTypeChoiceBoxRefresh(){
+    public void deleteTypeChoiceBoxRefresh() {
         deleteTypeChoiceBox.getItems().clear();
         deleteTypeChoiceBox.getItems().addAll(typeList);
     }
 
-    public void deleteItemChoiceBoxRefresh(){
+    public void deleteItemChoiceBoxRefresh() {
         deleteItemChoiceBox.getItems().clear();
         deleteItemChoiceBox.getItems().addAll(itemList);
     }
 
 
-    public void openDeletePane(){
+    public void openDeletePane() {
         deleteTypeChoiceBoxRefresh();
         deleteItemChoiceBoxRefresh();
         deletePane.setVisible(true);
     }
 
-    public void closeDeletePane(){
+    public void closeDeletePane() {
         deletePane.setVisible(false);
     }
 
-    public void openEditPane(ActionEvent event) throws  IOException{
-
+    public void openEditPane(ActionEvent event) throws IOException {
 
 
         editPane.setVisible(true);
     }
 
-    public void closeEditPane(ActionEvent event) throws  IOException{
+    public void closeEditPane(ActionEvent event) throws IOException {
         editPane.setVisible(false);
     }
 
-    public void closeAddButton(ActionEvent event) throws  IOException{
+    public void closeAddButton(ActionEvent event) throws IOException {
         mainAdd.setVisible(false);
     }
 
-    public void addButtonAction(ActionEvent event) throws IOException{
+    public void addButtonAction(ActionEvent event) throws IOException {
         mainAdd.setVisible(true);
     }
 
@@ -219,51 +217,78 @@ public class Controller implements Initializable {
     }
 
 
-    public void newItemButtonAction(ActionEvent event) throws IOException{
+    public void newItemButtonAction(ActionEvent event) throws IOException {
         itemCreateWindow.setVisible(true);
         mainAdd.setVisible(false);
     }
 
-    public void createTypeButtonAction(ActionEvent event){
+    public void createTypeButtonAction(ActionEvent event) {
 
-        Type t = Catalog.getCatalogInstance().createType(new Type(typeNameInput.getText()));
-        Catalog.getCatalogInstance().types.add(t);
-        lastCreatedType = t;
-        TreeItem<Object> treeItem = new TreeItem<>(t);
-        typeNodes.add(treeItem);
-        tree.getRoot().getChildren().add(treeItem);
-        System.out.println(tree.getRoot().getChildren().size());
 
-        //createWindow.setVisible(false);
-        addAttributeWindow.setVisible(true);
-        typeList.add(t);
-        addToTypeChoiceBoxes(t);
-        createWindow.setVisible(false);
+        if (typeList.size() != 0) {
+            for (Type type : typeList) {
+                if (typeNameInput.getText().equals(type.getName())) {
+                    Alert a = new Alert(Alert.AlertType.ERROR);
+                    a.setContentText("A type with the same name is already defined.");
+                    a.show();
+                    break;
 
-    }
-
-    @FXML
-    public void createItemButtonAction(ActionEvent event) throws IOException{
-        Item item = Catalog.getCatalogInstance().createItem(new Item(itemNameInput.getText(), (Type) typeChoice.getValue()));
-        Catalog.getCatalogInstance().items.add(item);
-        item.getType().getItems().add(item);
-        TreeItem<Object> treeItem = new TreeItem<>(item);
-        itemNodes.add(treeItem);
-        mainAdd.setVisible(false);
-        itemList.add(item);
-
-        for (int i=0;i<typeNodes.size();i++){
-            if(Objects.equals(typeNodes.get(i).getValue(), item.getType())){
-                typeNodes.get(i).getChildren().add(treeItem);
-                break;
+                }
             }
         }
+                else{
+                Type t = Catalog.getCatalogInstance().createType(new Type(typeNameInput.getText()));
+                Catalog.getCatalogInstance().types.add(t);
+                lastCreatedType = t;
+                TreeItem<Object> treeItem = new TreeItem<>(t);
+                typeNodes.add(treeItem);
+                tree.getRoot().getChildren().add(treeItem);
+                System.out.println(tree.getRoot().getChildren().size());
 
-        //tree.getRoot().getChildren().add(treeItem);
-        System.out.println(tree.getRoot().getChildren().size());
-        //createWindow.setVisible(false);
-        addToItemChoiceBoxes(item);
-        itemCreateWindow.setVisible(false);
+                //createWindow.setVisible(false);
+                addAttributeWindow.setVisible(true);
+                typeList.add(t);
+                addToTypeChoiceBoxes(t);
+                createWindow.setVisible(false);
+            }
+
+        }
+
+
+    @FXML
+    public void createItemButtonAction(ActionEvent event) throws IOException {
+        if (itemList.size() != 0) {
+            for (Item type : itemList) {
+                if (itemNameInput.getText().equals(type.getName())) {
+                    Alert a = new Alert(Alert.AlertType.ERROR);
+                    a.setContentText("An item with the same name is already defined.");
+                    a.show();
+                    break;
+
+                }
+            }
+        } else {
+            Item item = Catalog.getCatalogInstance().createItem(new Item(itemNameInput.getText(), (Type) typeChoice.getValue()));
+            Catalog.getCatalogInstance().items.add(item);
+            item.getType().getItems().add(item);
+            TreeItem<Object> treeItem = new TreeItem<>(item);
+            itemNodes.add(treeItem);
+            mainAdd.setVisible(false);
+            itemList.add(item);
+
+            for (int i = 0; i < typeNodes.size(); i++) {
+                if (Objects.equals(typeNodes.get(i).getValue(), item.getType())) {
+                    typeNodes.get(i).getChildren().add(treeItem);
+                    break;
+                }
+            }
+
+            //tree.getRoot().getChildren().add(treeItem);
+            System.out.println(tree.getRoot().getChildren().size());
+            //createWindow.setVisible(false);
+            addToItemChoiceBoxes(item);
+            itemCreateWindow.setVisible(false);
+        }
     }
 
     public void createTypeCancelButtonAction(ActionEvent event) {
@@ -275,75 +300,73 @@ public class Controller implements Initializable {
         itemCreateWindow.setVisible(false);
     }
 
-    public void addAttributeButtonAction(ActionEvent event){
-        lastCreatedType.addAttribute(attributeNameInput.getText(),null,null);
+    public void addAttributeButtonAction(ActionEvent event) {
+        lastCreatedType.addAttribute(attributeNameInput.getText(), null, null);
         attributeNameInput.setText("");
     }
 
-    public void finishAddingAttributeButtonAction(ActionEvent event){
+    public void finishAddingAttributeButtonAction(ActionEvent event) {
         addAttributeWindow.setVisible(false);
         createWindow.setVisible(false);
-        System.out.print(lastCreatedType.getName()  + " Attributes : \n");
+        System.out.print(lastCreatedType.getName() + " Attributes : \n");
 
-        for (int i=0;i<lastCreatedType.getDefaultAttributes().size();i++){
+        for (int i = 0; i < lastCreatedType.getDefaultAttributes().size(); i++) {
             System.out.println("* " + lastCreatedType.getDefaultAttributes().get(i).getName());
         }
     }
 
-    public void mouseClick(MouseEvent event){
+    public void mouseClick(MouseEvent event) {
 
-            TreeItem<Object> item = (TreeItem<Object>) tree.getSelectionModel().getSelectedItem();
+        TreeItem<Object> item = (TreeItem<Object>) tree.getSelectionModel().getSelectedItem();
 
-            System.out.println("Item is null : " +  (item == null));
+        System.out.println("Item is null : " + (item == null));
 
-            counter++;
+        counter++;
 
 
-            if(item != tree.getRoot()){
+        if (item != tree.getRoot()) {
 
-                System.out.println(item);
+            System.out.println(item);
 
-                if(item != null) {
+            if (item != null) {
 
-                    decider(item);
-
-                }
+                decider(item);
 
             }
 
+        }
+
     }
 
-    public void decider(TreeItem<Object> item){
-        if(item.getValue().getClass().getName().equals("com.app.ce216_project.Item")){
-            textSetter((Item)item.getValue());
-        }
-        else if(item.getValue().getClass().getName().equals("com.app.ce216_project.Type")){
-            textSetter((Type)item.getValue());
+    public void decider(TreeItem<Object> item) {
+        if (item.getValue().getClass().getName().equals("com.app.ce216_project.Item")) {
+            textSetter((Item) item.getValue());
+        } else if (item.getValue().getClass().getName().equals("com.app.ce216_project.Type")) {
+            textSetter((Type) item.getValue());
         }
     }
 
-    public void textSetter(Type type){
-       //textArea.setText("Name of the type: "+type.getName()+"\nItems that belongs to this type: "+ type.getItems().toString() + "\nDefault attributes are: "+ type.getDefaultAttributes().toString());
+    public void textSetter(Type type) {
+        //textArea.setText("Name of the type: "+type.getName()+"\nItems that belongs to this type: "+ type.getItems().toString() + "\nDefault attributes are: "+ type.getDefaultAttributes().toString());
         textArea.setText(type.showInformation());
     }
 
-    public void textSetter(Item item){
+    public void textSetter(Item item) {
         //textArea.setText("Name of the item: "+item.getName()+"\nThe type that this item belongs to: "+item.getType().toString()+"\nThe tags of this item: "+item.getTags().toString());
         textArea.setText(item.showInformation());
 
     }
 
 
+    public void chooseEditable(ActionEvent event) {
 
-    public void chooseEditable(ActionEvent event){
-
-        if (typeOrItemChoiceBox.getValue().equals("Type")){
+        if (typeOrItemChoiceBox.getValue().equals("Type")) {
 
             editItemPane.setVisible(false);
             editTypePane.setVisible(true);
 
 
-        }else{
+        } else {
 
             editTypePane.setVisible(false);
             editItemPane.setVisible(true);
@@ -352,15 +375,15 @@ public class Controller implements Initializable {
 
     }
 
-    public void chooseATypeToEdit(ActionEvent event){
+    public void chooseATypeToEdit(ActionEvent event) {
 
-        editTargetType = (Type)editTypeChoiceBox.getValue();
+        editTargetType = (Type) editTypeChoiceBox.getValue();
         defaultTypeAttributesChoiceBox.getItems().clear();
         defaultTypeAttributesChoiceBox.getItems().addAll(editTargetType.getDefaultAttributes());
 
     }
 
-    public void chooseAItemToEdit(ActionEvent event){
+    public void chooseAItemToEdit(ActionEvent event) {
 
         editTargetItem = (Item) editItemChoiceBox.getValue();
         defaultItemAttributesChoiceBox.getItems().clear();
@@ -369,12 +392,12 @@ public class Controller implements Initializable {
     }
 
 
-    public void editTypeName(){
+    public void editTypeName() {
 
 
-        for (Type type:typeList){
+        for (Type type : typeList) {
 
-            if(type.getName().equals(editTargetType.getName())){
+            if (type.getName().equals(editTargetType.getName())) {
 
                 type.setName(editTypeNameInput.getText());
                 typeNodes.get(typeList.indexOf(type)).setValue(type);
@@ -387,11 +410,11 @@ public class Controller implements Initializable {
 
     }
 
-    public void editItemName(){
+    public void editItemName() {
 
-        for (Item item:itemList){
+        for (Item item : itemList) {
 
-            if(item.getName().equals(editTargetItem.getName())){
+            if (item.getName().equals(editTargetItem.getName())) {
 
                 item.setName(editItemNameInput.getText());
                 itemNodes.get(itemList.indexOf(item)).setValue(item);
@@ -405,11 +428,11 @@ public class Controller implements Initializable {
 
     }
 
-    public void editDefaultItemAttribute(){
+    public void editDefaultItemAttribute() {
 
-        for (Attribute attribute:editTargetItem.getType().getDefaultAttributes()){
+        for (Attribute attribute : editTargetItem.getType().getDefaultAttributes()) {
 
-            if(attribute.getName().equals(defaultItemAttributesChoiceBox.getValue().toString())){
+            if (attribute.getName().equals(defaultItemAttributesChoiceBox.getValue().toString())) {
 
                 attribute.setValue(editItemAttributeValueInput.getText());
                 System.out.println(attribute.getName() + "  " + attribute.getValue());
@@ -421,9 +444,9 @@ public class Controller implements Initializable {
 
     }
 
-    public void addNewItemAttribute(){
+    public void addNewItemAttribute() {
 
-        editTargetItem.getType().getDefaultAttributes().add(new Attribute(newItemAttributeNameOnEdit.getText(),newAttributeValueOnEdit.getText()));
+        editTargetItem.getType().getDefaultAttributes().add(new Attribute(newItemAttributeNameOnEdit.getText(), newAttributeValueOnEdit.getText()));
         defaultItemAttributesChoiceBox.getItems().clear();
         defaultItemAttributesChoiceBox.getItems().addAll(editTargetItem.getType().getDefaultAttributes());
 
@@ -432,7 +455,7 @@ public class Controller implements Initializable {
     }
 
 
-    public void addTypeAttributeOnEdit(){
+    public void addTypeAttributeOnEdit() {
 
         editTargetType.getDefaultAttributes().add(new Attribute(addTypeAttributeNameInput.getText()));
         defaultTypeAttributesChoiceBox.getItems().clear();
@@ -440,15 +463,15 @@ public class Controller implements Initializable {
 
     }
 
-    public void removeFromTypeDefaultAttributes(){
+    public void removeFromTypeDefaultAttributes() {
 
-        editTargetType.getDefaultAttributes().remove((Attribute)defaultTypeAttributesChoiceBox.getValue());
+        editTargetType.getDefaultAttributes().remove((Attribute) defaultTypeAttributesChoiceBox.getValue());
         defaultTypeAttributesChoiceBox.getItems().clear();
         defaultTypeAttributesChoiceBox.getItems().addAll(editTargetType.getDefaultAttributes());
 
     }
 
-    public void removeFromItemAttributes(){
+    public void removeFromItemAttributes() {
 
         editTargetItem.getType().getDefaultAttributes().remove((Attribute) itemAttributesChoiceBox.getValue());
 
@@ -460,7 +483,7 @@ public class Controller implements Initializable {
 
     }
 
-    public void addItemTag(){
+    public void addItemTag() {
 
         editTargetItem.getTags().add(new Tag(tagInput.getText()));
         itemTagsChoiceBox.getItems().clear();
@@ -468,45 +491,42 @@ public class Controller implements Initializable {
 
     }
 
-    public void deleteTag(){
+    public void deleteTag() {
 
-        editTargetItem.getTags().remove((Tag)itemTagsChoiceBox.getValue());
+        editTargetItem.getTags().remove((Tag) itemTagsChoiceBox.getValue());
         itemTagsChoiceBox.getItems().clear();
         itemTagsChoiceBox.getItems().addAll(editTargetItem.getTags());
     }
 
 
-    public void closeEditTypePane(){
+    public void closeEditTypePane() {
 
         editTypePane.setVisible(false);
 
     }
 
-    public void closeEditItemPane(){
+    public void closeEditItemPane() {
 
         editItemPane.setVisible(false);
 
     }
 
 
-
-
-
-    public void deleteType(ActionEvent event){
+    public void deleteType(ActionEvent event) {
 
         TreeItem c = null;
 
         for (int i = 0; i < typeNodes.size(); i++) {
-            if (typeNodes.get(i).getValue().toString().equals(deleteTypeChoiceBox.getValue().toString())){
+            if (typeNodes.get(i).getValue().toString().equals(deleteTypeChoiceBox.getValue().toString())) {
 
                 c = typeNodes.get(i);
                 break;
             }
         }
 
-        for (int k=0;k<typeList.size();k++){
+        for (int k = 0; k < typeList.size(); k++) {
 
-            if(typeList.get(k).getName().equals(c.getValue().toString())){
+            if (typeList.get(k).getName().equals(c.getValue().toString())) {
 
                 removeFromTypeChoiceBoxes(typeList.get(k));
                 deleteItemChoiceBox.getItems().removeAll(typeList.get(k).getItems());
@@ -517,12 +537,12 @@ public class Controller implements Initializable {
 
         }
 
-        for (int k=0;k<c.getChildren().size();k++){
+        for (int k = 0; k < c.getChildren().size(); k++) {
 
-            for (int l=0;l<itemList.size();l++){
+            for (int l = 0; l < itemList.size(); l++) {
 
 
-                if(itemList.get(l).getName().equals(c.getChildren().get(k).toString())){
+                if (itemList.get(l).getName().equals(c.getChildren().get(k).toString())) {
 
                     removeFromItemChoiceBoxes(itemList.get(l));
                     itemList.remove(l);
@@ -535,7 +555,6 @@ public class Controller implements Initializable {
         }
 
 
-
         c.getChildren().clear();
 
         c.getParent().getChildren().remove(c);
@@ -546,13 +565,12 @@ public class Controller implements Initializable {
         typeChoice.getItems().addAll(typeList);
 
 
-
         deleteTypeChoiceBoxRefresh();
 
         tree.refresh();
     }
 
-    public void deleteItem(ActionEvent event){
+    public void deleteItem(ActionEvent event) {
 
         TreeItem c = null;
 
@@ -564,9 +582,9 @@ public class Controller implements Initializable {
             }
         }
 
-        for (int k=0;k<itemList.size();k++){
+        for (int k = 0; k < itemList.size(); k++) {
 
-            if(itemList.get(k).getName().equals(c.getValue().toString())){
+            if (itemList.get(k).getName().equals(c.getValue().toString())) {
 
                 removeFromItemChoiceBoxes(itemList.get(k));
 
@@ -588,9 +606,6 @@ public class Controller implements Initializable {
 
         tree.refresh();
     }
-
-
-
 
 
 }

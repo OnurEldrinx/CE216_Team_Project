@@ -80,7 +80,10 @@ public class Controller implements Initializable {
     private ChoiceBox typeChoice2;
 
     @FXML
-    private ChoiceBox editItemChoiceBox;
+    private ChoiceBox itemChoice;
+
+    @FXML
+    private ComboBox editItemComboBox;
 
     @FXML
     private ChoiceBox deleteTypeChoiceBox;
@@ -104,9 +107,11 @@ public class Controller implements Initializable {
         tree.setRoot(treeRoot);
 
 
-
         typeChoice1C.setValue("Types");
         typeChoice1C.getItems().addAll(typeList);
+
+        editItemComboBox.setValue("Items");
+        editItemComboBox.getItems().addAll(itemList);
 
 
         deleteTypeChoiceBox.setValue("Types");
@@ -126,13 +131,17 @@ public class Controller implements Initializable {
         }
     }
 
-
     public void ComboBoxRefresh() {
         for (Type type : typeList) {
             typeChoice1C.getItems().addAll(type);
         }
     }
 
+    public void EditItemComboBoxRefresh() {
+        for (Item item : itemList) {
+            editItemComboBox.getItems().addAll(item);
+        }
+    }
 
     public void deleteTypeChoiceBoxRefresh() {
         for (Type type : typeList) {
@@ -240,6 +249,7 @@ public class Controller implements Initializable {
         System.out.println(tree.getRoot().getChildren().size());
         //createWindow.setVisible(false);
         itemCreateWindow.setVisible(false);
+        EditItemComboBoxRefresh();
     }
 
     public void createTypeCancelButtonAction(ActionEvent event) {
@@ -328,6 +338,7 @@ public class Controller implements Initializable {
         for (int i = 0; i < typeList.size(); i++) {
             if (typeList.get(i).getName().equals(deleteTypeChoiceBox.getValue().toString())) {
                 typeList.remove(i);
+                typeNodes.remove(i);
             }
         }
     }
@@ -336,6 +347,7 @@ public class Controller implements Initializable {
         for (int i = 0; i < itemList.size(); i++) {
             if (itemList.get(i).getName().equals(deleteItemChoiceBox.getValue().toString())) {
                 itemList.remove(i);
+                itemNodes.remove(i);
             }
         }
         tree.refresh();
@@ -351,4 +363,32 @@ public class Controller implements Initializable {
         }
 
     }
+
+    public void editItemName(ActionEvent event) {
+        for (int i = 0; i < itemList.size(); i++) {
+            if (itemList.get(i).getName().equals(editItemComboBox.getValue().toString())) {
+                itemList.get(i).setName(editItemNameInput.getText());
+            }
+        }
+    }
+
+    public void editItemAddTag(ActionEvent event) {
+        for (int i = 0; i < itemList.size(); i++) {
+            if (itemList.get(i).getName().equals(editItemComboBox.getValue().toString())) {
+                itemList.get(i).addTag(editItemAttributeInput.getText());
+            }
+        }
+    }
+
+
+    public void removeTag(ActionEvent event) {
+        for (int i = 0; i < itemList.size(); i++) {
+            if (itemList.get(i).getName().equals(editItemComboBox.getValue().toString())) {
+                itemChoice.getItems().setAll(itemList.get(i).getTags().toString());
+            }
+        }
+
+    }
+
+
 }

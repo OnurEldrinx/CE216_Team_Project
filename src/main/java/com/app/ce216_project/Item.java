@@ -21,7 +21,10 @@ public class Item {
 
     public void addAttribute(){ }
 
-    public void addTag(){ }
+    public void addTag(String tag){
+        Tag newtag = new Tag(tag);
+        tags.add(newtag);
+    }
 
     public String showInformation(){
 

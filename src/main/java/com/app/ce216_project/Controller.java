@@ -223,20 +223,22 @@ public class Controller implements Initializable {
     }
 
     public void createTypeButtonAction(ActionEvent event) {
-
+        boolean checker = false;
 
         if (typeList.size() != 0) {
+
             for (Type type : typeList) {
                 if (typeNameInput.getText().equals(type.getName())) {
                     Alert a = new Alert(Alert.AlertType.ERROR);
                     a.setContentText("A type with the same name is already defined.");
                     a.show();
                     break;
-
                 }
+                else
+                    checker = true;
             }
         }
-                else{
+        if(typeList.size() == 0 || checker == true){
                 Type t = Catalog.getCatalogInstance().createType(new Type(typeNameInput.getText()));
                 Catalog.getCatalogInstance().types.add(t);
                 lastCreatedType = t;
@@ -257,6 +259,7 @@ public class Controller implements Initializable {
 
     @FXML
     public void createItemButtonAction(ActionEvent event) throws IOException {
+        boolean checker = false;
         if (itemList.size() != 0) {
             for (Item type : itemList) {
                 if (itemNameInput.getText().equals(type.getName())) {
@@ -264,10 +267,11 @@ public class Controller implements Initializable {
                     a.setContentText("An item with the same name is already defined.");
                     a.show();
                     break;
-
                 }
+                else
+                    checker = true;
             }
-        } else {
+        }  if(itemList.size() == 0 || checker == true){
             Item item = Catalog.getCatalogInstance().createItem(new Item(itemNameInput.getText(), (Type) typeChoice.getValue()));
             Catalog.getCatalogInstance().items.add(item);
             item.getType().getItems().add(item);
@@ -317,7 +321,7 @@ public class Controller implements Initializable {
 
     public void mouseClick(MouseEvent event) {
 
-        TreeItem<Object> item = (TreeItem<Object>) tree.getSelectionModel().getSelectedItem();
+        TreeItem<Object> item = tree.getSelectionModel().getSelectedItem();
 
         System.out.println("Item is null : " + (item == null));
 

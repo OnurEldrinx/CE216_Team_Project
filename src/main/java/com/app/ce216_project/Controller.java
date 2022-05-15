@@ -38,6 +38,7 @@ public class Controller implements Initializable {
     ArrayList<Type> typeList = new ArrayList<>();
     ArrayList<Item> itemList = new ArrayList<>();
     ArrayList<Tag> tagList = new ArrayList<>();
+
     ArrayList<TreeItem<Object>> typeNodes = new ArrayList<>();
     ArrayList<TreeItem<Object>> itemNodes = new ArrayList<>();
 
@@ -109,10 +110,9 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        TreeItem<Object> treeRoot = new TreeItem<>("Types");
-        System.out.println(Catalog.getCatalogInstance().getTypes().size());
-        tree.setRoot(treeRoot);
 
+        System.out.println(Catalog.getCatalogInstance().getTypes().size());
+        treeMaker();
 
         typeChoice.setValue("Types");
         typeChoice.getItems().addAll(typeList);
@@ -127,6 +127,47 @@ public class Controller implements Initializable {
         deleteTypeChoiceBox.setValue("Types");
         deleteItemChoiceBox.setValue("Items");
 
+    }
+
+    public void treeMaker() {
+        TreeItem<Object> treeRoot = new TreeItem<>("Types");
+        tree.setRoot(treeRoot);
+        tree.setShowRoot(true);
+        for (Type type : typeList) {
+            TreeItem treeTypeItem = new TreeItem<>(type);
+            treeRoot.getChildren().add(treeTypeItem);
+            treeTypeItem.setExpanded(true);
+            for (Item item : type.getItems()) {
+                treeTypeItem.getChildren().add(new TreeItem<>(item));
+            }
+        }
+    }
+
+    private TreeItem root = new TreeItem();
+
+    public void treeMaker2(String s) {
+
+        tree.setRoot(root);
+        tree.setShowRoot(false);
+        root.getChildren().clear();
+        for (Type type : typeList) {
+            if (type.getName().contains(s)) {
+                TreeItem treeTypeItem = new TreeItem<>(type);
+                root.getChildren().add(treeTypeItem);
+            }
+            for (Item item : type.getItems()) {
+                if (item.getName().contains(s)) {
+                    TreeItem treeTypeItem = new TreeItem<>(item);
+                    root.getChildren().add(treeTypeItem);
+                }
+            }
+            for(Tag tag : tagList ){
+                if(tag.getName().contains(s)){
+                    TreeItem treeTypeItem = new TreeItem<>(tag);
+                    root.getChildren().add(treeTypeItem);
+                }
+            }
+        }
     }
 
     public void addToTypeChoiceBoxes(Type t) {
@@ -221,28 +262,27 @@ public class Controller implements Initializable {
                     a.setContentText("A type with the same name is already defined.");
                     a.show();
                     break;
-                }
-                else
+                } else
                     checker = true;
             }
         }
-        if(typeList.size() == 0 || checker == true){
-                Type t = Catalog.getCatalogInstance().createType(new Type(typeNameInput.getText()));
-                Catalog.getCatalogInstance().types.add(t);
-                lastCreatedType = t;
-                TreeItem<Object> treeItem = new TreeItem<>(t);
-                typeNodes.add(treeItem);
-                tree.getRoot().getChildren().add(treeItem);
-                System.out.println(tree.getRoot().getChildren().size());
+        if (typeList.size() == 0 || checker == true) {
+            Type t = Catalog.getCatalogInstance().createType(new Type(typeNameInput.getText()));
+            Catalog.getCatalogInstance().types.add(t);
+            lastCreatedType = t;
+            TreeItem<Object> treeItem = new TreeItem<>(t);
+            typeNodes.add(treeItem);
+            tree.getRoot().getChildren().add(treeItem);
+            System.out.println(tree.getRoot().getChildren().size());
 
-                //createWindow.setVisible(false);
-                addAttributeWindow.setVisible(true);
-                typeList.add(t);
-                addToTypeChoiceBoxes(t);
-                createWindow.setVisible(false);
-            }
-
+            //createWindow.setVisible(false);
+            addAttributeWindow.setVisible(true);
+            typeList.add(t);
+            addToTypeChoiceBoxes(t);
+            createWindow.setVisible(false);
         }
+
+    }
 
 
     @FXML
@@ -255,11 +295,11 @@ public class Controller implements Initializable {
                     a.setContentText("An item with the same name is already defined.");
                     a.show();
                     break;
-                }
-                else
+                } else
                     checker = true;
             }
-        }  if(itemList.size() == 0 || checker == true){
+        }
+        if (itemList.size() == 0 || checker == true) {
             Item item = Catalog.getCatalogInstance().createItem(new Item(itemNameInput.getText(), (Type) typeChoice.getValue()));
             Catalog.getCatalogInstance().items.add(item);
             item.getType().getItems().add(item);
@@ -608,27 +648,17 @@ public class Controller implements Initializable {
         tree.refresh();
     }
 
-    public void search(KeyEvent event){
+    public void search(KeyEvent event) {
+
+        if(searchBar.getText().isBlank()){
+            treeMaker();
+        }
+        else {
             String search = searchBar.getText();
 
-            for (Type type : typeList) {
-                if (type.getName().contains(search)) {
-                    System.out.println(type);
-                }
-
-                for (Item item : itemList) {
-                    if (item.getName().contains(search)) {
-                        System.out.println(item);
-                    }
-                }
-
-                for (Tag tag : tagList) {
-                    if (tag.getName().contains(search)) {
-                        System.out.println(tag);
-                    }
-                }
-            }
+            treeMaker2(search);
         }
     }
+}
 
 

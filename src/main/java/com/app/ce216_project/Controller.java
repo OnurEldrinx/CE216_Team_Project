@@ -1,12 +1,12 @@
 package com.app.ce216_project;
 
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -37,6 +37,7 @@ public class Controller implements Initializable {
 
     ArrayList<Type> typeList = new ArrayList<>();
     ArrayList<Item> itemList = new ArrayList<>();
+    ArrayList<Tag> tagList = new ArrayList<>();
     ArrayList<TreeItem<Object>> typeNodes = new ArrayList<>();
     ArrayList<TreeItem<Object>> itemNodes = new ArrayList<>();
 
@@ -82,10 +83,6 @@ public class Controller implements Initializable {
     @FXML
     private Pane deletePane;
 
-    private Stage currentStage;
-    private Parent currentRoot;
-    private Scene currentScene;
-
     @FXML
     private ChoiceBox typeChoice;
 
@@ -105,6 +102,9 @@ public class Controller implements Initializable {
 
     @FXML
     private Pane editPane;
+
+    @FXML
+    private TextField searchBar;
 
 
     @Override
@@ -128,7 +128,6 @@ public class Controller implements Initializable {
         deleteItemChoiceBox.setValue("Items");
 
     }
-
 
     public void addToTypeChoiceBoxes(Type t) {
 
@@ -199,19 +198,8 @@ public class Controller implements Initializable {
 
     public void newTypeButtonAction(ActionEvent event) throws IOException {
 
-        /*
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("AddTypeScene.fxml"));
-        currentStage = new Stage();
-        currentRoot = fxmlLoader.load();
-        currentScene = new Scene(currentRoot);
-        currentStage.setScene(currentScene);
-        currentStage.setTitle("Create New Type");
-        currentStage.show();*/
-
         createWindow.setVisible(true);
         mainAdd.setVisible(false);
-
-        //tree.getRoot().getChildren().add(new TreeItem<>(Catalog.getCatalogInstance().createType(new Type("Book")).getName()));
 
 
     }
@@ -369,35 +357,36 @@ public class Controller implements Initializable {
             editItemPane.setVisible(false);
             editTypePane.setVisible(true);
 
-
         } else {
 
             editTypePane.setVisible(false);
             editItemPane.setVisible(true);
-
         }
-
     }
 
-    public void chooseATypeToEdit(ActionEvent event) {
+    public Type chooseATypeToEdit() {
 
         editTargetType = (Type) editTypeChoiceBox.getValue();
         defaultTypeAttributesChoiceBox.getItems().clear();
         defaultTypeAttributesChoiceBox.getItems().addAll(editTargetType.getDefaultAttributes());
 
+        return editTargetType;
     }
 
-    public void chooseAItemToEdit(ActionEvent event) {
+    public Item chooseAItemToEdit() {
 
         editTargetItem = (Item) editItemChoiceBox.getValue();
         defaultItemAttributesChoiceBox.getItems().clear();
         defaultItemAttributesChoiceBox.getItems().addAll(editTargetItem.getType().getDefaultAttributes());
+
+        return editTargetItem;
 
     }
 
 
     public void editTypeName() {
 
+        editTargetType = chooseATypeToEdit();
 
         for (Type type : typeList) {
 
@@ -415,6 +404,8 @@ public class Controller implements Initializable {
     }
 
     public void editItemName() {
+
+        editTargetItem = chooseAItemToEdit();
 
         for (Item item : itemList) {
 
@@ -489,17 +480,23 @@ public class Controller implements Initializable {
 
     public void addItemTag() {
 
-        editTargetItem.getTags().add(new Tag(tagInput.getText()));
+        editTargetItem = chooseAItemToEdit();
+
+        editTargetItem.addTag((tagInput.getText()));
         itemTagsChoiceBox.getItems().clear();
         itemTagsChoiceBox.getItems().addAll(editTargetItem.getTags());
+        tagList.add(new Tag(tagInput.getText()));
 
     }
 
     public void deleteTag() {
 
-        editTargetItem.getTags().remove((Tag) itemTagsChoiceBox.getValue());
+        editTargetItem = chooseAItemToEdit();
+
+        editTargetItem.removeTag(itemTagsChoiceBox.getValue());
         itemTagsChoiceBox.getItems().clear();
         itemTagsChoiceBox.getItems().addAll(editTargetItem.getTags());
+        tagList.remove(itemTagsChoiceBox.getValue());
     }
 
 
@@ -611,5 +608,27 @@ public class Controller implements Initializable {
         tree.refresh();
     }
 
+    public void search(KeyEvent event){
+            String search = searchBar.getText();
 
-}
+            for (Type type : typeList) {
+                if (type.getName().contains(search)) {
+                    System.out.println(type);
+                }
+
+                for (Item item : itemList) {
+                    if (item.getName().contains(search)) {
+                        System.out.println(item);
+                    }
+                }
+
+                for (Tag tag : tagList) {
+                    if (tag.getName().contains(search)) {
+                        System.out.println(tag);
+                    }
+                }
+            }
+        }
+    }
+
+

@@ -26,6 +26,10 @@ public class Item {
         tags.add(newtag);
     }
 
+    public void removeTag(Object tag){
+        tags.remove(tag);
+    }
+
     public String showInformation(){
 
         StringBuilder i = new StringBuilder();
